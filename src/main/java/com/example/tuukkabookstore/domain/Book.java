@@ -1,13 +1,20 @@
-package com.example.tuukkabooksore.domain;
+package com.example.tuukkabookstore.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Book {
-	
-	public long id;
-	public String title;
-	public String author;
-	public int publicationYear;
-	public long isbn;
-	public float price;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	private String title;
+	private String author;
+	private int publicationYear;
+	private long isbn;
+	private double price;
 	
 	
 	public Book() {
@@ -15,9 +22,8 @@ public class Book {
 	}
 
 
-	public Book(long id, String title, String author, int publicationYear, long isbn, float price) {
+	public Book(String title, String author, int publicationYear, long isbn, double price) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.author = author;
 		this.publicationYear = publicationYear;
@@ -26,12 +32,12 @@ public class Book {
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -76,12 +82,12 @@ public class Book {
 	}
 
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
 
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -91,7 +97,8 @@ public class Book {
 		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", publicationYear=" + publicationYear
 				+ ", isbn=" + isbn + ", price=" + price + "]";
 	}
+}
 	
 	
 
-}
+
