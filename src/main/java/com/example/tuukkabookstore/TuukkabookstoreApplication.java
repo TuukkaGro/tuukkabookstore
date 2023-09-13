@@ -1,3 +1,4 @@
+
 package com.example.tuukkabookstore;
 
 import org.slf4j.Logger;
@@ -22,8 +23,8 @@ public class TuukkabookstoreApplication {
 	public CommandLineRunner bookDemo(BookRepository repository) {
 		return (args) -> {
 			log.info("save some books");
-			repository.save(new Book("The Hobbit", "J.R.R. Tolkien", 1937, 63728367, 9.99));
-			repository.save(new Book("Fellowship of the ring", "J.R.R. Tolkien", 1954, 63728367, 15.89));
+			repository.save(new Book("The Hobbit", "J.R.R. Tolkien", 1937, "63728367", 9.99));
+			repository.save(new Book("Fellowship of the ring", "J.R.R. Tolkien", 1954, "63728367", 15.89));
 			
 		
 			log.info("fetch all books");
@@ -34,6 +35,5 @@ public class TuukkabookstoreApplication {
 		};
 	}
 }
-
 
 
