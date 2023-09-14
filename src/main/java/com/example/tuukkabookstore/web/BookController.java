@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.tuukkabookstore.domain.Book;
 import com.example.tuukkabookstore.domain.BookRepository;
+import com.example.tuukkabookstore.domain.CategoryRepository;
 
 
 
@@ -17,6 +18,9 @@ public class BookController {
 	
 	@Autowired
 	private BookRepository repository;
+	
+	@Autowired
+	private CategoryRepository crepository;
 	
 	// palauttaa booklist sivun ja listaa kaikki kirjat 
 	@GetMapping("/booklist")
@@ -34,12 +38,14 @@ public class BookController {
 	@GetMapping("/add")
 	public String addBook(Model model) {
 		model.addAttribute("book", new Book());
+		model.addAttribute("categorys", crepository.findAll());
 		return "addbook";
 	}
 	// palauttaa editbook sivun tietylle kirjalle kirjan id:n mukaan
 	@GetMapping("/edit/{id}")
 	public String editBook(@PathVariable("id") Long bookId, Model model) {
 		model.addAttribute("book", repository.findById(bookId));
+		model.addAttribute("categorys", crepository.findAll());
 		return "editbook";
 		}
 	// tallettaa kirjan ja palauttaa booklist sivun
