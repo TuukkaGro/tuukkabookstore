@@ -39,7 +39,7 @@ public class TuukkabookstoreApplication {
 			repository.save(new Book("Fellowship of the ring", "J.R.R. Tolkien", 1954, "63728367", 15.89,
 					crepository.findByName("Fantasy").get(0)));
 			
-			
+
 			
 		
 			log.info("fetch all books");
