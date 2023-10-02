@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,38 +29,47 @@ public class BookController {
 	@Autowired
 	private CategoryRepository crepository;
 	
+	// palauttaa login sivun
+	@RequestMapping(value="/login")
+	public String login() {	
+		return "login";
+		}
+	
 	// RESTfull palvelu joka palauttaa kaikki kirjat JSON olioina 
 	 @RequestMapping(value="/books", method = RequestMethod.GET)
 	 public @ResponseBody List<Book> bookListRest (){
 		 return (List<Book>) repository.findAll();
-	 }
+		 }
 	
 	// RESTfull palvelu joka palauttaa kirjan ID:n mukaan JSON oliona
 	 @RequestMapping (value="/book/{id}", method = RequestMethod.GET)
 	 public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long id) {
 		 return repository.findById(id);
-	 }
+		 }
 	
 	// palauttaa booklist sivun ja listaa kaikki kirjat 
 	@GetMapping("/booklist")
 	public String bookList(Model model) {
 		model.addAttribute("books", repository.findAll());
 		return "booklist";
-	}
-	// poistaa kirjan ja palauttaa booklist sivua uudelleen 
+		}
+	// poistaa kirjan ja palauttaa booklist sivua uudelleen vain jos käyttäjänä on ADMIN
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/delete/{id}")
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 		repository.deleteById(bookId);
 		return "redirect:../booklist";
-	}
-	// palauttaa addbook sivun
+		}
+	// palauttaa addbook sivun vain jos käyttäjänä on ADMIN
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/add")
 	public String addBook(Model model) {
 		model.addAttribute("book", new Book());
 		model.addAttribute("categorys", crepository.findAll());
 		return "addbook";
-	}
-	// palauttaa editbook sivun tietylle kirjalle kirjan id:n mukaan
+		}
+	// palauttaa editbook sivun tietylle kirjalle kirjan id:n mukaan vain jos käyttäjänä ADMIN
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/edit/{id}")
 	public String editBook(@PathVariable("id") Long bookId, Model model) {
 		model.addAttribute("book", repository.findById(bookId));
@@ -71,7 +81,7 @@ public class BookController {
 	public String save(Book book) {
 		repository.save(book);
 		return"redirect:booklist";
-	}
+		}
 	
 	// palauttaa sivun index
 	@GetMapping("/index")
